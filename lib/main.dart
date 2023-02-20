@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:real_app/core/providers/app_provider.dart';
-import 'package:real_app/core/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:real_app/view/signup.dart';
+import 'package:real_app/providers/app_provider.dart';
+import 'package:real_app/providers/auth_provider.dart';
+import 'package:real_app/view/splash_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -30,11 +31,11 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<AppProvider>(builder: (context, appProvider, child) {
         return MaterialApp(
-          title: 'Splash Screen',
+          title: 'Spin Beaz',
           theme: ThemeData(
             primarySwatch: Colors.deepPurple,
           ),
-          home: SignUp(),
+          home: SplashScreen(),
           debugShowCheckedModeBanner: false,
         );
       }),

@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:real_app/models/post.dart';
+import 'package:real_app/providers/app_provider.dart';
 import 'package:real_app/utils/styles.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -127,63 +132,79 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget feedWidget(BuildContext context) {
+  Widget feedWidget(BuildContext context, Post post) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(top:24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 15,
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 22,
-                    backgroundImage: AssetImage('assets/profile2.jpg'),
-                  ),
-                  SizedBox(width: 10),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Ade Emmanuel",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      //  SizedBox(height: 6),
-                      Text(
-                        "Lagos, Nigeria",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Icon(CupertinoIcons.ellipsis, size: 28)
-                ],
-              ),
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.only(top: 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 15,
+              right: 15,
             ),
-            Container(
-              height: 500,
-              margin: const EdgeInsets.only(
-                top: 10,
-              ),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('assets/photo.png'),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 22,
+                  backgroundImage: AssetImage('assets/profile2.jpg'),
                 ),
-              ),
-            )
-          ],
-        ));
+                SizedBox(width: 10),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      post.name,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    //  SizedBox(height: 6),
+                    Text(
+                      "Lagos, Nigeria",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Icon(CupertinoIcons.ellipsis, size: 28)
+              ],
+            ),
+          ),
+          Container(
+            height: 500,
+            margin: const EdgeInsets.only(
+              top: 10,
+            ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: FileImage(
+                    File(post.image),
+                  ) // AssetImage('assets/photo.png'),
+                  ),
+            ),
+          ),
+          Container(
+              padding: EdgeInsets.only(top: 12, left: 24, right: 24, bottom: 24),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                Text(
+                  post.caption,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
+              ]))
+        ],
+      ),
+    );
   }
 
   @override
@@ -200,14 +221,18 @@ class HomeScreen extends StatelessWidget {
               rewardsBar(context),
               SizedBox(height: 12),
               Expanded(
-                child: ListView(
+                child: ListView.builder(
                   physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  children: [
-                    feedWidget(context),
-                    feedWidget(context),
-                    feedWidget(context),
-                  ],
+                  itemCount: Provider.of<AppProvider>(context, listen: true)
+                      .posts
+                      .length,
+                  itemBuilder: ((context, index) {
+                    return feedWidget(
+                        context,
+                        Provider.of<AppProvider>(context, listen: true)
+                            .posts[index]);
+                  }),
                 ),
               ),
             ],

@@ -7,16 +7,15 @@ import 'package:real_app/utils/styles.dart';
 import 'package:real_app/view/app_screen.dart';
 import 'package:real_app/view/home_screen.dart';
 import 'package:real_app/view/login_screen.dart';
-import 'package:real_app/view/signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _LoginScreenState();
+    return _SignUpScreenState();
   }
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool obsecureText = false;
   bool? termsAccepted = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -30,8 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       _formKey.currentState!.save();
       String response = await Provider.of<AuthProvider>(context, listen: false)
-          .login(
-              email: emailController.text, password: passwordController.text, name: nameController.text);
+          .signUp(
+              email: emailController.text,
+              password: passwordController.text,
+              name: nameController.text);
       if (response == "success") {
         // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacement(
@@ -83,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   SizedBox(height: 10),
                   Text(
-                    "Welcome Back!",
+                    "Welcome!",
                     style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
@@ -92,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Sign In to continue",
+                    "Please provide following \ndetails for your new account",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
@@ -105,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextFormField(
                       controller: nameController,
                       validator: (value) {
-                        if (value == null ||value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return "value must not be empty";
                         }
                       },
@@ -182,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       validator: (String? value) {
-                        if (value == null ||value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return 'password must not be empty';
                         }
                       },
@@ -197,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         _submitForm(context);
                       },
-                      child: Text("Sign In to continue"),
+                      child: Text("Sign up with Email Address"),
                       style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                             fontSize: 17,
@@ -213,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account? - ",
+                        "Already have an account? - ",
                         style: TextStyle(
                           fontSize: 15,
                           color: midBlue,
@@ -221,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       GestureDetector(
                         child: Text(
-                          "Sign Up",
+                          "Sign In",
                           style: TextStyle(
                             color: midBlue,
                             fontSize: 15,
@@ -232,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignUpScreen(),
+                              builder: (context) => LoginScreen(),
                             ),
                           );
                         },

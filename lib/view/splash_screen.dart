@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:real_app/utils/styles.dart';
-import 'package:real_app/view/login_screen.dart';
+import 'package:real_app/view/intro_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginScreen(),
+          builder: (context) => IntroScreen(),
         ),
       ),
     );
